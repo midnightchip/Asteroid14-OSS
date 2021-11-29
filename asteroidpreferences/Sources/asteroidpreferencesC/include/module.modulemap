@@ -1,0 +1,4 @@
+module asteroidpreferencesC {
+    umbrella "."
+    export *
+}

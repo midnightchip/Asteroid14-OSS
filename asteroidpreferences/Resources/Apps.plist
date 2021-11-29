@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>items</key>
+        <array>
+            <dict>
+                <key>cell</key>
+                <string>PSSwitchCell</string>
+                <key>default</key>
+                <true/>
+                <key>defaults</key>
+                <string>me.midnightchips.asteroidpreferences</string>
+                <key>key</key>
+                <string>AppEnableHooks</string>
+                <key>label</key>
+                <string>Enable Live Weather on Applications</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSLinkListCell</string>
+                <key>detail</key>
+                <string>ATLApplicationListMultiSelectionController</string>
+                <key>defaults</key>
+                <string>me.midnightchips.asteroidpreferences</string>
+                <key>key</key>
+                <string>SelectedLiveWeatherApps</string>
+                <key>label</key>
+                <string>Enabled Apps</string>
+                <key>sections</key>
+                <array>
+                    <dict>
+                        <key>sectionType</key>
+                        <string>Visible</string>
+                    </dict>
+                </array>
+                <key>showIdentifiersAsSubtitle</key>
+                <true/>
+                <key>defaultApplicationSwitchValue</key>
+                <false/>
+                <key>useSearchBar</key>
+                <true/>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSSwitchCell</string>
+                <key>default</key>
+                <true/>
+                <key>defaults</key>
+                <string>me.midnightchips.asteroidpreferences</string>
+                <key>key</key>
+                <string>AppEnableAnimation</string>
+                <key>label</key>
+                <string>Enable Animation on Apps</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSSwitchCell</string>
+                <key>default</key>
+                <true/>
+                <key>defaults</key>
+                <string>me.midnightchips.asteroidpreferences</string>
+                <key>key</key>
+                <string>AppEnableAnimationBackground</string>
+                <key>label</key>
+                <string>Enable Animation Background</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSSwitchCell</string>
+                <key>default</key>
+                <false/>
+                <key>defaults</key>
+                <string>me.midnightchips.asteroidpreferences</string>
+                <key>key</key>
+                <string>AppEnableWeatherGlyph</string>
+                <key>label</key>
+                <string>Enable Weather Glyph</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSSwitchCell</string>
+                <key>default</key>
+                <false/>
+                <key>defaults</key>
+                <string>me.midnightchips.asteroidpreferences</string>
+                <key>key</key>
+                <string>AppEnableTemperature</string>
+                <key>label</key>
+                <string>Enable Localized Temperature</string>
+            </dict>
+
+            <dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+            </dict>
+            <dict>
+                <key>id</key>
+                <string>enableCustomLocation</string>
+                <key>cell</key>
+                <string>PSSwitchCell</string>
+                <key>default</key>
+                <false/>
+                <key>defaults</key>
+                <string>me.midnightchips.asteroidpreferences</string>
+                <key>key</key>
+                <string>AppEnableCustomLocation</string>
+                <key>label</key>
+                <string>Enable Custom Location</string>
+            </dict>
+            <dict>
+                <key>id</key>
+                <string>selectWeatherLocation</string>
+                <key>cell</key>
+                <string>PSButtonCell</string>
+                <key>label</key>
+                <string>Select Custom Location</string>
+                <key>action</key>
+                <string>presentWeatherPicker:</string>
+            </dict>
+            <dict>
+                <key>cell</key>
+                <string>PSGroupCell</string>
+            </dict>
+            <dict>
+                <key>id</key>
+                <string>enableCustomAnimation</string>
+                <key>cell</key>
+                <string>PSSwitchCell</string>
+                <key>default</key>
+                <false/>
+                <key>defaults</key>
+                <string>me.midnightchips.asteroidpreferences</string>
+                <key>key</key>
+                <string>AppEnableCustomCondition</string>
+                <key>label</key>
+                <string>Enable Custom Condition</string>
+            </dict>
+            <dict>
+                <key>id</key>
+                <string>enableNightAnimation</string>
+                <key>cell</key>
+                <string>PSSwitchCell</string>
+                <key>default</key>
+                <false/>
+                <key>defaults</key>
+                <string>me.midnightchips.asteroidpreferences</string>
+                <key>key</key>
+                <string>AppEnableLocationNight</string>
+                <key>label</key>
+                <string>Use Night Animations</string>
+            </dict>
+            <dict>
+                <key>id</key>
+                <string>selectCustomAnimation</string>
+                <key>cell</key>
+                <string>PSButtonCell</string>
+                <key>label</key>
+                <string>Select Custom Condition</string>
+                <key>action</key>
+                <string>presentConditionPicker:</string>
+            </dict>
+        </array>
+        <key>title</key>
+        <string>Application Icon</string>
+    </dict>
+</plist>

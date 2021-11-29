@@ -1,0 +1,122 @@
+import asteroidpreferencesC
+import Cephei
+import Foundation
+import UIKit
+
+class DeviceViewSwift: UIView {
+    /*
+         WUIWeatherConditionBackgroundView *_weatherView;
+     UIImageView *wallPaper;
+     City *city;
+     HBPreferences *prefs;
+     long cityIndex;
+     long customCondition;
+     BOOL isNight;
+     BOOL customConditionEnabled;
+     BOOL customLocationIndexEnabled;
+     BOOL enableBackground;
+     */
+
+    var weatherView: WUIWeatherConditionBackgroundView?
+    var wallPaper: UIImageView?
+    var city: City?
+    var prefs = HBPreferences(identifier: "me.midnightchips.asteroidpreferences")
+    var cityIndex: Int = 0
+    var customCondition: Int = 0
+    var homeAnimation: ObjCBool = false
+    var isNight: ObjCBool = false
+    var customConditionEnabled: ObjCBool = false
+    var customLocationIndexEnabled: ObjCBool = false
+    var enableBackground: ObjCBool = false
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configView()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+
+    func configView() {
+        backgroundColor = UIColor.clear
+
+        prefs.register(integer: &cityIndex, default: 0, forKey: "HomeScreenLocationIndex")
+        prefs.register(integer: &customCondition, default: 0, forKey: "HomeScreenCustomConditionIndex")
+        prefs.register(_Bool: &homeAnimation, default: false, forKey: "EnableHomeScreenAnimation")
+        prefs.register(_Bool: &isNight, default: false, forKey: "HomeCustomLocationNight")
+        prefs.register(_Bool: &customConditionEnabled, default: false, forKey: "EnableCustomHomeCondition")
+        prefs.register(_Bool: &customLocationIndexEnabled, default: false, forKey: "EnableCustomLocationHome")
+        prefs.register(_Bool: &enableBackground, default: false, forKey: "EnableAnimationBackgroundHome")
+
+        prefs.registerPreferenceChange {
+            self.changeWeather()
+        }
+
+        changeWeather()
+    }
+
+    func changeWeather() {
+        if enableBackground.boolValue {
+            if let weatherView = weatherView {
+                weatherView.removeFromSuperview()
+                city = nil
+            }
+
+            if let wallPaper = wallPaper {
+                wallPaper.removeFromSuperview()
+            }
+
+            wallPaper = UIImageView(image: getWallpaper())
+            wallPaper?.frame = bounds
+            wallPaper?.contentMode = .scaleAspectFill
+            addSubview(wallPaper!)
+
+            weatherView = WUIWeatherConditionBackgroundView(frame: bounds)
+            weatherView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
+            if customLocationIndexEnabled.boolValue {
+                city = WeatherPreferences.shared().loadSavedCities()[cityIndex]
+            } else if customConditionEnabled.boolValue {
+                city = WeatherPreferences.shared().loadSavedCities()[0]
+                city?.conditionCode = Int64(customCondition)
+                if city!.isDay && isNight.boolValue || !city!.isDay && !isNight.boolValue {
+                    let currentDiff = city?.timeZone.secondsFromGMT() ?? 0
+                    city?.timeZone = TimeZone(secondsFromGMT: currentDiff + 43200)
+                }
+            } else {
+                city = WeatherPreferences.shared().loadSavedCities()[0]
+            }
+            weatherView?.background().setCity(city)
+            weatherView?.background().gradientLayer.isHidden = !enableBackground.boolValue
+
+        } else {
+            if let weatherView = weatherView {
+                weatherView.removeFromSuperview()
+            }
+        }
+    }
+
+    func getWallpaper() -> UIImage? {
+        var imageData: NSData
+        let fileMngr = FileManager.default
+        if UITraitCollection.current.userInterfaceStyle == .dark {
+            if fileMngr.fileExists(atPath: "/var/mobile/Library/SpringBoard/HomeBackgrounddark.cpbitmap") {
+                imageData = NSData(contentsOfFile: "/var/mobile/Library/SpringBoard/HomeBackgrounddark.cpbitmap")!
+            } else {
+                imageData = NSData(contentsOfFile: "/var/mobile/Library/SpringBoard/LockBackgrounddark.cpbitmap")!
+            }
+        } else {
+            if fileMngr.fileExists(atPath: "/var/mobile/Library/SpringBoard/HomeBackground.cpbitmap") {
+                imageData = NSData(contentsOfFile: "/var/mobile/Library/SpringBoard/HomeBackground.cpbitmap")!
+            } else {
+                imageData = NSData(contentsOfFile: "/var/mobile/Library/SpringBoard/LockBackground.cpbitmap")!
+            }
+        }
+
+        // let imageDataRef: CFData = imageData
+        let imageArray: [AnyObject]! = CPBitmapCreateImagesFromData(imageData, nil, 1, nil).takeRetainedValue() as [AnyObject]
+        let img = UIImage(cgImage: imageArray[0] as! CGImage)
+        return img
+    }
+}

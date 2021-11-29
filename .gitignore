@@ -1,0 +1,16 @@
+.DS_Store
+/.build
+/Packages
+/*.xcodeproj
+xcuserdata/
+asteroidpreferences/.build
+.theos
+/packages
+reversedWeather/
+weatherassets/
+
+Makefile
+.DS_Store
+Sources/Asteroid14/validate
+control 
+Asteroid14.plist
