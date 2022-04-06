@@ -246,10 +246,10 @@
     }
 
     CFDataRef imageDataRef = (__bridge CFDataRef)imageData;
-    NSArray *imageArray = (__bridge NSArray *)CPBitmapCreateImagesFromData(
-        imageDataRef, NULL, 1, NULL);
+    CFArrayRef imageArray = CPBitmapCreateImagesFromData(lockWallpaperDataRef, NULL, 1, NULL);
     wallPaper = [[UIImageView alloc]
-        initWithImage:[UIImage imageWithCGImage:(CGImageRef)imageArray[0]]];
+        initWithImage:[UIImage imageWithCGImage:(CGImageRef)CFArrayGetValueAtIndex(imageArray, 0)]];
+    CFRelease(imageArray);
     [wallPaper setFrame:self.bounds];
     wallPaper.translatesAutoresizingMaskIntoConstraints = false;
 
