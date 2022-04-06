@@ -2,13 +2,13 @@
 @import Cephei;
 
 @implementation DeviceView {
-    WUIWeatherConditionBackgroundView *_weatherView;
-    SBFLockScreenDateView *clockView;
-    SBUICallToActionLabel *forecastLabel;
-    UIImageView *wallPaper;
-    City *city;
-    City *cleanCity;
-    HBPreferences *prefs;
+    WUIWeatherConditionBackgroundView* _weatherView;
+    SBFLockScreenDateView* clockView;
+    SBUICallToActionLabel* forecastLabel;
+    UIImageView* wallPaper;
+    City* city;
+    City* cleanCity;
+    HBPreferences* prefs;
     long cityIndex;
     long customCondition;
     BOOL enableAnimation;
@@ -20,7 +20,8 @@
     BOOL enableForecastText;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame
+{
     self = [super initWithFrame:frame];
     if (self) {
         [self setUpWallpaper];
@@ -29,7 +30,8 @@
     return self;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame enableHomeScreen:(BOOL)enableHome {
+- (instancetype)initWithFrame:(CGRect)frame enableHomeScreen:(BOOL)enableHome
+{
     self = [super initWithFrame:frame];
     if (self) {
         [self setHomeScreen:enableHome];
@@ -38,7 +40,8 @@
     return self;
 }
 
-- (void)configView {
+- (void)configView
+{
     self.backgroundColor = [UIColor clearColor];
 
     prefs = [[HBPreferences alloc]
@@ -85,7 +88,8 @@
     [self changeWeather];
 }
 
-- (void)changeWeather {
+- (void)changeWeather
+{
     dispatch_async(dispatch_get_main_queue(), ^{
         if (_weatherView) {
             [_weatherView removeFromSuperview];
@@ -125,7 +129,8 @@
     });
 }
 
-- (void)configCity {
+- (void)configCity
+{
     if (customLocationIndexEnabled) {
         cleanCity =
             [[WeatherPreferences sharedPreferences] loadSavedCities][cityIndex];
@@ -159,7 +164,8 @@
     }
 }
 
-- (void)setUpClockView {
+- (void)setUpClockView
+{
     if (clockView) {
         [clockView removeFromSuperview];
         clockView = nil;
@@ -168,7 +174,7 @@
     [clockView setDate:[NSDate new]];
 
     if (enableLockscreenIcon) {
-        UIImageView *weatherImage = [[UIImageView alloc]
+        UIImageView* weatherImage = [[UIImageView alloc]
             initWithImage:[WeatherImageLoader
                               conditionImageWithConditionIndex:cleanCity
                                                                    .conditionCode]];
@@ -191,7 +197,8 @@
     [clockView.rightAnchor constraintEqualToAnchor:self.rightAnchor].active = true;
 }
 
-- (void)setupForecastLabel {
+- (void)setupForecastLabel
+{
     if (forecastLabel) {
         [forecastLabel removeFromSuperview];
         forecastLabel = nil;
@@ -208,15 +215,16 @@
     [forecastLabel.rightAnchor constraintEqualToAnchor:self.rightAnchor].active = true;
 }
 
-- (void)setUpWallpaper {
+- (void)setUpWallpaper
+{
     if (wallPaper) {
         [wallPaper removeFromSuperview];
         wallPaper = nil;
     }
 
-    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSFileManager* fileManager = [NSFileManager defaultManager];
 
-    NSData *imageData = [NSData new];
+    NSData* imageData = [NSData new];
     if (UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
         if ([fileManager fileExistsAtPath:@"/var/mobile/Library/SpringBoard/"
                                           @"HomeBackgrounddark.cpbitmap"]
@@ -245,9 +253,12 @@
         }
     }
 
+    // ImageData still retains ownership of the image, so we don't need to worry about releasing the CFData
     CFDataRef imageDataRef = (__bridge CFDataRef)imageData;
-    NSArray *imageArray = (__bridge NSArray *)CPBitmapCreateImagesFromData(
-        imageDataRef, NULL, 1, NULL);
+    // Ownership of the CFArray is transfered to the NSArray, ARC will release the array when it is no longer needed
+    NSArray* imageArray = CFBridgingRelease(CPBitmapCreateImagesFromData(
+        imageDataRef, NULL, 1, NULL));
+
     wallPaper = [[UIImageView alloc]
         initWithImage:[UIImage imageWithCGImage:(CGImageRef)imageArray[0]]];
     [wallPaper setFrame:self.bounds];
@@ -262,24 +273,25 @@
     [wallPaper.rightAnchor constraintEqualToAnchor:self.rightAnchor].active = true;
 }
 // #cursed
-- (long)formatTime:(long)offset {
+- (long)formatTime:(long)offset
+{
     if (offset < 0) {
         return 0;
     }
-    NSString *digits = [NSString stringWithFormat:@"%ld", offset];
+    NSString* digits = [NSString stringWithFormat:@"%ld", offset];
     if (digits.length <= 2) {
         return 3600; // 1 Hour
     } else if (digits.length == 3) {
-        NSString *firstDigit = [digits substringToIndex:1];
-        NSString *restOfDigits = [digits substringFromIndex:1];
+        NSString* firstDigit = [digits substringToIndex:1];
+        NSString* restOfDigits = [digits substringFromIndex:1];
         if ([firstDigit intValue] < 1) {
             return 3600 + [restOfDigits intValue] * 60;
         } else {
             return [firstDigit intValue] * 3600 + [restOfDigits intValue] * 60;
         }
     } else {
-        NSString *first2Digits = [digits substringToIndex:2];
-        NSString *restOfDigits = [digits substringFromIndex:2];
+        NSString* first2Digits = [digits substringToIndex:2];
+        NSString* restOfDigits = [digits substringFromIndex:2];
         if ([first2Digits intValue] < 1) {
             return 3600 + [restOfDigits intValue] * 60;
         } else {

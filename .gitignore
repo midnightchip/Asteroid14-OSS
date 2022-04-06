@@ -14,3 +14,4 @@ Makefile
 Sources/Asteroid14/validate
 control 
 Asteroid14.plist
+.vscode
