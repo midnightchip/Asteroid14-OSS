@@ -246,7 +246,7 @@
     }
 
     CFDataRef imageDataRef = (__bridge CFDataRef)imageData;
-    CFArrayRef imageArray = CPBitmapCreateImagesFromData(lockWallpaperDataRef, NULL, 1, NULL);
+    CFArrayRef imageArray = CPBitmapCreateImagesFromData(imageDataRef, NULL, 1, NULL);
     wallPaper = [[UIImageView alloc]
         initWithImage:[UIImage imageWithCGImage:(CGImageRef)CFArrayGetValueAtIndex(imageArray, 0)]];
     CFRelease(imageArray);
